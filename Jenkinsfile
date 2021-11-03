@@ -1,7 +1,7 @@
 pipeline {
   agent { label "${AGENT_LABEL}" }
       stages {
-        stage('Run docker') {
+        stage('Build image') {
           steps {
             container('docker') {
               echo POD_CONTAINER
@@ -13,6 +13,11 @@ pipeline {
               '''
             }
           }
+        }
+        stage('Push image') {
+            docker.withRegistry('', 'docker-hub-credentials') {
+            dockerImage.push()
+            }
         }
       }
 }
