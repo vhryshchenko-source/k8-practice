@@ -8,7 +8,7 @@ pipeline {
               sh '''
                   docker --version
                   ls
-                  docker build --tag test-image .
+                  docker build --tag vhrysh/hit-count:$VERSION .
                   docker images
               '''
             }
