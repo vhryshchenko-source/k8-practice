@@ -7,7 +7,7 @@ pipeline {
               echo POD_CONTAINER
               sh '''
                   docker --version
-                  echo "FROM hello-world" >> Dockerfile
+                  ls
                   docker build --tag test-image .
                   docker images
               '''
