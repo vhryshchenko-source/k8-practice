@@ -15,10 +15,12 @@ pipeline {
           }
         }
         stage('Push image') {
-            steps{ 
+            steps{
+              script {
                 docker.withRegistry('', 'docker-hub-credentials') {
                 dockerImage.push()
                 }
+              }
             }
         }
       }
