@@ -11,7 +11,7 @@ pipeline {
               echo POD_CONTAINER
               sh '''
                   docker build --tag vhrysh/hit-count:$VERSION --build-arg PYTHON_VERSION .
-                  echo $RELEASE_NOTES
+                  #echo $RELEASE_NOTES
                   echo $GIT_COMMIT
                   docker images
               '''
