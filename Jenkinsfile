@@ -9,7 +9,7 @@ pipeline {
             container('docker') {
               echo POD_CONTAINER
               sh '''
-                  docker build --tag vhrysh/hit-count:$VERSION .
+                  docker build --tag vhrysh/hit-count:$VERSION --build-arg PYTHON_VERSION .
                   docker images
               '''
             }
