@@ -1,5 +1,8 @@
 pipeline {
   agent { label "${AGENT_LABEL}" }
+      environment {
+        DOCKERHUB_CREDENTIAL = credentials('docker-hub-credentials')
+      }
       stages {
         stage('Build image') {
           steps {
@@ -14,12 +17,17 @@ pipeline {
             }
           }
         }
+        stage('Docker hub login') {
+          steps{
+            container('docker') {
+              sh 'echo $DOCKERHUB_CREDENTIAL_PSW | docker login -u $DOCKERHUB_CREDENTIAL_USR --password-stdin'
+            }   
+          }
+        }
         stage('Push image') {
             steps{
-              script {
-                docker.withRegistry('', 'docker-hub-credentials') {
-                dockerImage.push()
-                }
+              container('docker') {
+              sh 'docker push vhrysh/hit-count:$VERSION'
               }
             }
         }
