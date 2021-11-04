@@ -1,4 +1,5 @@
-FROM python:3.8-alpine
+ARG  PYTHON_VERSION
+FROM python:${PYTHON_VERSION}-alpine
 WORKDIR /app
 ENV REDIS_HOST=redis
 ENV FLASK_ENV=development
