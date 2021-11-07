@@ -25,7 +25,7 @@ pipeline {
         stage('Push image') {
             steps{
               container('docker') {
-              sh 'docker push vhrysh/hit-count:$VERSION'
+              sh 'docker push vhrysh/hit-count:$GIT_COMMIT'
               }
             }
         }
