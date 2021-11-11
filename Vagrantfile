@@ -1,14 +1,14 @@
 
 Vagrant.configure("2") do |config|
-   config.vm.define "master-kub2" do |master|
+   config.vm.define "master-kube" do |master|
       master.vm.box = "ubuntu/xenial64"
       master.vm.box_check_update = false
-      master.vm.hostname = "master-kube2"
+      master.vm.hostname = "master-kube"
 
       master.vm.network "public_network", ip: "192.168.1.107"
 
       master.vm.provider "virtualbox" do |vb|
-         vb.name = "master-kube2"
+         vb.name = "master-kube"
          vb.memory = 6096
          vb.cpus = 2
       end
@@ -40,15 +40,15 @@ Vagrant.configure("2") do |config|
       SHELL
    end
 
-   config.vm.define "worker-kube2" do |worker|
+   config.vm.define "worker-kube" do |worker|
       worker.vm.box = "ubuntu/xenial64"
       worker.vm.box_check_update = false
-      worker.vm.hostname = "worker-kube2"
+      worker.vm.hostname = "worker-kube"
 
       worker.vm.network "public_network", ip: "192.168.1.108"
 
       worker.vm.provider "virtualbox" do |vb|
-         vb.name = "worker-kube2"
+         vb.name = "worker-kube"
          vb.memory = 4096
          vb.cpus = 2
       end
