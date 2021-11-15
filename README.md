@@ -35,11 +35,11 @@ If you change ip address for master in `master.vm.network`, you also must change
 
 **1.1 To create and configure Kubernetes cluster run the Vagrant command with the up flag.**    
     $ `vagrant up`    
-**1.2 Once the cluster is completed build you can check the status of there system with the status flag.**
+**1.2 Once the cluster is completed build you can check the status of there system with the status flag.**  
     $ `vagrant status`  
 **1.3 Join your worker node into the cluster**
 - In output of `vagrant up` command you will see something like this:   
-`kubeadm join 192.168.1.130:6443 --token qt57zu.wuvqh64un13trr7x --discovery-token-ca-cert-hash sha256:5ad014cad868fdfe9388d5b33796cf40fc1e8c2b3dccaebff0b066a0532e8723`    
+$ `kubeadm join 192.168.1.130:6443 --token qt57zu.wuvqh64un13trr7x --discovery-token-ca-cert-hash sha256:5ad014cad868fdfe9388d5b33796cf40fc1e8c2b3dccaebff0b066a0532e8723`    
 - Copy your own output and login into worker node using command:  
  $ `vagrant ssh <woker-node-name>`  
 - Switch to root user:  
