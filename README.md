@@ -80,7 +80,7 @@ service/jenkins-master   NodePort   10.105.78.192   <none>        8080:31857/TCP
 ```
 #### 2.2 Access Jenkins dashboard
 Now we can access the Jenkins instance at http://192.168.1.107:31857 (use your port that related to 8080 for get services command).  
-To access Jenkins, you initially need to enter your credentials. The default username for new installations is admin. The password can be obtained in several ways. This example uses the Jenkins deployment pod name.
+To access Jenkins, you initially need to enter your credentials. The default username for new installations is admin. The password can be obtained in several ways. This example uses the Jenkins deployment pod name.  
 2.2.1 To find the name of the pod, enter the following command:  
 $ `kubectl get pods -n jenkins`  
 Once you locate the name of the pod, use it to access the pod’s logs.  
