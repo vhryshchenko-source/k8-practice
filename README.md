@@ -55,7 +55,7 @@ To build the docker image of our python application, in this tutorial used Jenki
 Login into master node and clone this GitHub repository. 
 The configuration file for setup Jenkins are located in _Jenkins setup_ folder, choose this one and follow the instructions below.  
 
-####2.1 Setup Jenkins Deployment
+#### 2.1 Setup Jenkins Deployment
 2.1.1 You can deploy Jenkins at any namespace, but for better isolation it is recommended that you create a dedicated namespace.  
 $ `kubectl create namespace jenkins`  
 2.1.2 Deploy Jenkins using kubectl   
@@ -78,7 +78,7 @@ $ `kubectl get services -n jenkins`
 NAME                     TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                          AGE
 service/jenkins-master   NodePort   10.105.78.192   <none>        8080:31857/TCP,50000:30400/TCP   3d1h
 ```
-####2.2 Access Jenkins dashboard
+#### 2.2 Access Jenkins dashboard
 Now we can access the Jenkins instance at http://192.168.1.107:31857 (use your port that related to 8080 for get services command).  
 To access Jenkins, you initially need to enter your credentials. The default username for new installations is admin. The password can be obtained in several ways. This example uses the Jenkins deployment pod name.
 2.2.1 To find the name of the pod, enter the following command:  
@@ -203,7 +203,7 @@ I have been seen 1 times. My Hostname is: hit-count-689c98c767-fgxnq
 For delete helm chart use command:  
 $ `helm uninstall <release-name>`  
 
-##Contributing
+## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 Please make sure to update tests as appropriate.
