@@ -121,7 +121,7 @@ To install plugins navigate to **Manage Jenkins** > **Manage Plugins** > **Avail
 
 2.3.2  Setup Jenkins Cloud Configuration and Slave Pod Specification  
 
-First, you have to register the jenkins-master service account to Jenkins credential manager, navigate to Credentials > Systems > Global Credentials (or you can add your own domain).
+First, you have to register the jenkins-master service account to Jenkins credential manager, navigate to **Credentials > Systems > Global Credentials** (or you can add your own domain).
 Click add credentials and choose kind credential Secret text. In secret field type jenkins-master service account token:  
 $`kubectl get secret $(kubectl get sa jenkins-master -n jenkins -o jsonpath={.secrets[0].name}) -n jenkins -o jsonpath={.data.token} | base64 --decode`  
 
