@@ -29,9 +29,9 @@ This file contains next:
 - configured network bridge with a specific ip address for master VM (you can change ip for your own value), 
 - selected Virtualbox provider with specific memory and cpu resources, and ran the shell script. 
 
-This shell script will be installed docker, tools for creation and management kubernetes cluster and helm.
-If you change ip address for worker in `master.vm.network`, you also must change `KUBELET_EXTRA_ARGS=--node-ip=<worker-ip-address>` for both VM's.
-If you change ip address for master in `master.vm.network`, you also must change `--apiserver-advertise-address=<master-ip-address>` for master Vm.
+This shell script will be installed docker, tools for creation and management kubernetes cluster and helm.  
+If you choose another ip address for worker in `master.vm.network ip: "192.168.1.108"`, you also must change `KUBELET_EXTRA_ARGS=--node-ip=<worker-ip-address>` for both VM's. The default value is `192.168.1.108`.  
+If you choose another ip address for master in `master.vm.network ip: "192.168.1.107"`, you also must change `--apiserver-advertise-address=<master-ip-address>` for master Vm. The default value is `192.168.1.107`.
 
 **1.1 To create and configure Kubernetes cluster run the Vagrant command with the up flag.**    
     $ `vagrant up`    
@@ -53,24 +53,22 @@ $ `kubeadm join 192.168.1.130:6443 --token qt57zu.wuvqh64un13trr7x --discovery-t
 
 To build the docker image of our python application, in this tutorial used Jenkins CI and his master-slave strategy on kubernetes. 
 Login into master node and clone this GitHub repository. 
-The configuration file for setup Jenkins are located in _Jenkins setup_ folder, choose this one and follow the instructions below.  
+The configuration file for setup Jenkins are located in _jenkins-helm_ folder.  
 
 #### 2.1 Setup Jenkins Deployment
-2.1.1 You can deploy Jenkins at any namespace, but for better isolation it is recommended that you create a dedicated namespace.  
+You can deploy Jenkins at any namespace, but for better isolation it is recommended that you create a dedicated namespace.  
 $ `kubectl create namespace jenkins`  
-2.1.2 Deploy Jenkins using kubectl   
-$ `kubectl apply -f jenkins-deployment.yaml`  
-To validate that creating the deployment was successful you can invoke:  
-$ `kubectl get deployments -n jenkins`  
+Deploy Jenkins by using Helm:     
+$ `helm install <release-name> jenkins-helm/ -n jenkins`
 ```
-NAME                             READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/jenkins-master   1/1     1            1           3d
+NAME: jenkins-master
+LAST DEPLOYED: Mon Nov 15 10:21:15 2021
+NAMESPACE: jenkins
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
 ```
-2.1.3 Jenkins needs to access the Kubernetes API, therefore you need to properly setup a Kubernetes Service Account and Role in order to represent Jenkins access for the Kubernetes API.  
-$ `kubectl apply -f jenkins-role.yaml`  
-2.1.4 To enable access from network to the Jenkins pod you need apply service manifest.  
-$ `kubectl apply -f jenkins-service.yaml`  
-2.1.5 To verify that the deployment and the service have been created  
+To verify that the deployment and the service have been created  
 $ `kubectl get all -n jenkins`  
 To validate that creating the service was successful you can run:  
 $ `kubectl get services -n jenkins` 
@@ -80,7 +78,7 @@ service/jenkins-master   NodePort   10.105.78.192   <none>        8080:31857/TCP
 ```
 #### 2.2 Access Jenkins dashboard
 Now we can access the Jenkins instance at http://192.168.1.107:31857 (use your port that related to 8080 for get services command).  
-To access Jenkins, you initially need to enter your credentials. The default username for new installations is admin. The password can be obtained in several ways. This example uses the Jenkins deployment pod name.  
+To access Jenkins, you initially need to enter your credentials. The default username for new installations is admin. The password can be obtained in several ways. This example uses the Jenkins deployment pod name.
 2.2.1 To find the name of the pod, enter the following command:  
 $ `kubectl get pods -n jenkins`  
 Once you locate the name of the pod, use it to access the pod’s logs.  
@@ -121,7 +119,7 @@ To install plugins navigate to **Manage Jenkins** > **Manage Plugins** > **Avail
 
 2.3.2  Setup Jenkins Cloud Configuration and Slave Pod Specification  
 
-First, you have to register the jenkins-master service account to Jenkins credential manager, navigate to **Credentials > Systems > Global Credentials** (or you can add your own domain).
+First, you have to register the jenkins-master service account to Jenkins credential manager, navigate to Credentials > Systems > Global Credentials (or you can add your own domain).
 Click add credentials and choose kind credential Secret text. In secret field type jenkins-master service account token:  
 $`kubectl get secret $(kubectl get sa jenkins-master -n jenkins -o jsonpath={.secrets[0].name}) -n jenkins -o jsonpath={.data.token} | base64 --decode`  
 
@@ -181,7 +179,10 @@ Clone this git repository. The helm chart are in folder `helm-chart` with follow
 └── values.yaml
 ```
 The folder template contains are deployment and service manifests for python app and redis.
-The file values.yaml contain variables as image name for app, namespace, and also image, name for redis.
+The file values.yaml contain variables as image name for app, namespace, and also image, name for redis.  
+The principle of operation of the application on Kubernetes is shown in the picture below.  
+![](./PythonRedisAppK8.png)
+
 To apply this chart you need to run:  
 $ `helm install <release-name> helm-chart/`  
 ```
