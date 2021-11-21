@@ -21,6 +21,10 @@ spec:
         - name: REDIS_PORT
           value: "6379"
         image: {{ .Values.container.image }}
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
         ports:
         - name: app-port
           containerPort: 5000
