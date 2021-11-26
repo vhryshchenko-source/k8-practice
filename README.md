@@ -113,6 +113,7 @@ You have successfully installed Jenkins on your Kubernetes cluster.
 - Kubernetes;
 - Docker;
 - Git;
+- Pipeline;
 - Node and Label Parameter Plugin.  
 
 To install plugins navigate to **Manage Jenkins** > **Manage Plugins** > **Available**  
