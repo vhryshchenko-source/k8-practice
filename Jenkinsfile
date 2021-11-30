@@ -45,14 +45,16 @@ pipeline {
             branch 'release-0.1'
           }
           steps{
-            if ($RELEASE_TAG == '') {
-              container('docker') {
-                sh 'docker push vhrysh/hit-count:$GIT_COMMIT'
-              }
-            } else {
-              container('docker') {
-                sh 'docker tag vhrysh/hit-count:$GIT_COMMIT vhrysh/hit-count:$RELEASE_TAG'
-                sh 'docker push vhrysh/hit-count:$RELEASE_TAG'
+            script {
+              if ($RELEASE_TAG == '') {
+                container('docker') {
+                  sh 'docker push vhrysh/hit-count:$GIT_COMMIT'
+                }
+              } else {
+                container('docker') {
+                  sh 'docker tag vhrysh/hit-count:$GIT_COMMIT vhrysh/hit-count:$RELEASE_TAG'
+                  sh 'docker push vhrysh/hit-count:$RELEASE_TAG'
+                }
               }
             }
           }
