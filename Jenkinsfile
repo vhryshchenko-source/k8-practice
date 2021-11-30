@@ -20,8 +20,10 @@ pipeline {
         }
         stage('Docker hub login') {
           when {
-            branch 'develop'
-            branch 'release-0.1'
+            anyOf {
+              branch 'develop'
+              branch 'release-0.1'
+            }
           }
           steps{
             container('docker') {
