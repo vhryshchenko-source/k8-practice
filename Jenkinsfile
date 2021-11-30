@@ -45,7 +45,7 @@ pipeline {
             branch 'release-0.1'
           }
           steps{
-            if (branch 'develop') {
+            if ($RELEASE_TAG == '') {
               container('docker') {
                 sh 'docker push vhrysh/hit-count:$GIT_COMMIT'
               }
