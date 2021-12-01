@@ -13,7 +13,7 @@ pipeline {
               sh '''
                   docker build --tag vhrysh/hit-count:$GIT_COMMIT --build-arg PYTHON_VERSION .
                   docker images
-                  echo $ GIT_BRANCH
+                  echo $GIT_BRANCH
               '''
             }
           }
