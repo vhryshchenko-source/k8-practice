@@ -14,9 +14,8 @@ pipeline {
           steps {
             container('docker') {
               echo POD_CONTAINER
-              echo GIT_BRANCH
               sh '''
-                  docker build --tag vhrysh/hit-count:$GIT_COMMIT --build-arg PYTHON_VERSION .
+                  docker build --tag $DOCKER_REPO:$GIT_COMMIT --build-arg PYTHON_VERSION .
                   docker images
               '''
             }
@@ -37,7 +36,7 @@ pipeline {
           }
           steps{
             container('docker') {
-              sh 'docker pull vhrysh/hit-count:$GIT_COMMIT'
+              sh 'docker pull $DOCKER_REPO:$GIT_COMMIT'
             }
           }
         }
@@ -46,12 +45,12 @@ pipeline {
             script {
               if (RELEASE_TAG == '') {
                 container('docker') {
-                  sh 'docker push vhrysh/hit-count:$GIT_COMMIT'
+                  sh 'docker push $DOCKER_REPO:$GIT_COMMIT'
                 }
               } else {
                 container('docker') {
-                  sh 'docker tag vhrysh/hit-count:$GIT_COMMIT vhrysh/hit-count:$RELEASE_TAG'
-                  sh 'docker push vhrysh/hit-count:$RELEASE_TAG'
+                  sh 'docker tag $DOCKER_REPO:$GIT_COMMIT $DOCKER_REPO:$RELEASE_TAG'
+                  sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
                 }
               }
             }
@@ -59,4 +58,3 @@ pipeline {
         }
       }
 }
-
