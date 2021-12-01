@@ -6,7 +6,7 @@ pipeline {
       stages {
         stage('Build image') {
           when {
-            branch 'develop'
+            branch '*'
           }
           steps {
             container('docker') {
