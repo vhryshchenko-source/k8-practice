@@ -16,7 +16,7 @@ pipeline {
               sh '''
                   docker build --tag vhrysh/hit-count:$GIT_COMMIT --build-arg PYTHON_VERSION .
                   docker images
-                  env.BRANCH_NAME
+                  echo $BRANCH_NAME
               '''
             }
           }
