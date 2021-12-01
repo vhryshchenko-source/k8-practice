@@ -30,7 +30,7 @@ pipeline {
         stage('Pull image') {
           when {
             expression {
-              $RELEASE_TAG != ''
+              RELEASE_TAG != ''
             }
           }
           steps{
@@ -42,7 +42,7 @@ pipeline {
         stage('Push image') {
           steps{
             script {
-              if ($RELEASE_TAG == '') {
+              if (RELEASE_TAG == '') {
                 container('docker') {
                   sh 'docker push vhrysh/hit-count:$GIT_COMMIT'
                 }
