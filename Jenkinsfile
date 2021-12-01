@@ -13,13 +13,13 @@ pipeline {
           steps {
             container('docker') {
               echo POD_CONTAINER
-              echo BRANCH_NAME
-              echo $BRANCH_NAME
+              echo GIT_BRANCH
+              echo $GIT_BRANCH
               sh '''
                   docker build --tag vhrysh/hit-count:$GIT_COMMIT --build-arg PYTHON_VERSION .
                   docker images
-                  echo $BRANCH_NAME
-                  echo "${$BRANCH_NAME}"
+                  echo $GIT_BRANCH
+                  echo "${GIT_BRANCH}"
               '''
             }
           }
