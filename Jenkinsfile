@@ -7,7 +7,7 @@ pipeline {
         stage('Build image') {
           when {
             expression {
-              GIT_BRANCH == 'origin/develop1'
+              GIT_BRANCH == 'origin/develop'
             }
           }
           steps {
@@ -21,12 +21,6 @@ pipeline {
           }
         }
         stage('Docker hub login') {
-          when {
-            anyOf {
-              branch 'develop'
-              branch 'release-0.1'
-            }
-          }
           steps{
             container('docker') {
               sh 'echo $DOCKERHUB_CREDENTIAL_PSW | docker login -u $DOCKERHUB_CREDENTIAL_USR --password-stdin'
@@ -35,7 +29,9 @@ pipeline {
         }
         stage('Pull image') {
           when {
-            branch 'release-0.1'
+            expression {
+              $RELEASE_TAG != ''
+            }
           }
           steps{
             container('docker') {
@@ -44,10 +40,6 @@ pipeline {
           }
         }
         stage('Push image') {
-          when {
-            branch 'develop'
-            branch 'release-0.1'
-          }
           steps{
             script {
               if ($RELEASE_TAG == '') {
