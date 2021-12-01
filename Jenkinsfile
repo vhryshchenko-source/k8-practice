@@ -8,6 +8,7 @@ pipeline {
           when {
             expression {
               GIT_BRANCH == 'origin/develop'
+              RELEASE_TAG == ''
             }
           }
           steps {
@@ -57,4 +58,3 @@ pipeline {
         }
       }
 }
-
