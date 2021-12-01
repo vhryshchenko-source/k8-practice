@@ -7,19 +7,15 @@ pipeline {
         stage('Build image') {
           when {
             expression {
-              return env.BRANCH_NAME != 'origin/develop'
+              GIT_BRANCH == 'origin/develop'
             }
           }
           steps {
             container('docker') {
               echo POD_CONTAINER
-              echo GIT_BRANCH
-              echo $GIT_BRANCH
               sh '''
                   docker build --tag vhrysh/hit-count:$GIT_COMMIT --build-arg PYTHON_VERSION .
                   docker images
-                  echo $GIT_BRANCH
-                  echo "${GIT_BRANCH}"
               '''
             }
           }
