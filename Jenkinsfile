@@ -7,7 +7,7 @@ pipeline {
         stage('Build image') {
           when {
             expression {
-              GIT_BRANCH == 'origin/develop'
+              GIT_BRANCH == 'origin/develop1'
             }
           }
           steps {
