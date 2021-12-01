@@ -2,18 +2,18 @@ pipeline {
   agent { label "${AGENT_LABEL}" }
       environment {
         DOCKERHUB_CREDENTIAL = credentials('docker-hub-credentials')
+        GIT_BRANCH = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
       }
       stages {
         stage('Build image') {
-          when {
-            branch '*'
-          }
+
           steps {
             container('docker') {
               echo POD_CONTAINER
               sh '''
                   docker build --tag vhrysh/hit-count:$GIT_COMMIT --build-arg PYTHON_VERSION .
                   docker images
+                  echo $ GIT_BRANCH
               '''
             }
           }
