@@ -7,7 +7,7 @@ pipeline {
         stage('Build image') {
           when {
             expression {
-              return env.BRANCH_NAME == 'origin/develop'
+              return env.BRANCH_NAME != 'origin/develop'
             }
           }
           steps {
