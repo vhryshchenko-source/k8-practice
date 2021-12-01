@@ -14,6 +14,7 @@ pipeline {
           steps {
             container('docker') {
               echo POD_CONTAINER
+              echo GIT_BRANCH
               sh '''
                   docker build --tag $DOCKER_REPO:$GIT_COMMIT --build-arg PYTHON_VERSION .
                   docker images
