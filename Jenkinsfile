@@ -13,7 +13,7 @@ pipeline {
               sh '''
                   docker build --tag vhrysh/hit-count:$GIT_COMMIT --build-arg PYTHON_VERSION .
                   docker images
-                  sh 'printenv'
+                  printenv
               '''
             }
           }
