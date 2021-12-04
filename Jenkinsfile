@@ -1,8 +1,22 @@
 pipeline {
   agent { label "${AGENT_LABEL}" }
-      environment {
-        DOCKERHUB_CREDENTIAL = credentials('docker-hub-credentials')
-      }
+
+  environment {
+    DOCKERHUB_CREDENTIAL = credentials('docker-hub-credentials')
+  }
+  parameters {
+      gitParameter (  branch: '', 
+                      branchFilter: 'origin/(.*)', 
+                      defaultValue: 'main', 
+                      description: '', 
+                      name: 'BRANCH', 
+                      quickFilterEnabled: true, 
+                      selectedValue: 'TOP', 
+                      sortMode: 'DESCENDING', 
+                      tagFilter: '*', 
+                      type: 'PT_BRANCH', 
+                      useRepository: 'git@github.com:vhryshchenko-source/k8-practice.git')
+  }
       stages {
         stage('Build image') {
           when {
@@ -59,4 +73,3 @@ pipeline {
         }
       }
 }
-
