@@ -34,6 +34,7 @@ pipeline {
                     ]
                 ) 
             }
+        }
 
         stage('Env print') {
             steps {
