@@ -18,6 +18,32 @@ pipeline {
                       useRepository: 'git@github.com:vhryshchenko-source/k8-practice.git')
   }
       stages {
+        stage('Checkout') {
+            steps{
+                // Checkout branch
+                git branch: "${params.BRANCH}", credentialsId: 'github-credentials', url: 'git@github.com:vhryshchenko-source/k8-practice.git'
+                // Checkout commit
+                checkout(
+                    [$class: 'GitSCM', 
+                    branches: [[name: GIT_COMMIT]],
+                    doGenerateSubmoduleConfigurations: false, 
+                    extensions: [],
+                    submoduleCfg: [], userRemoteConfigs: 
+                    [[credentialsId: 'github-credentials', 
+                    url: 'git@github.com:vhryshchenko-source/k8-practice.git']]
+                    ]
+                ) 
+            }
+
+        stage('Env print') {
+            steps {
+                sh '''
+                    echo $BRANCH
+                    echo $GIT_COMMIT
+                '''
+            }
+        }
+
         stage('Build image') {
           when {
             expression {
