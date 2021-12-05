@@ -7,7 +7,7 @@ pipeline {
   parameters {
       gitParameter (  branch: '', 
                       branchFilter: 'origin/(.*)', 
-                      defaultValue: 'main', 
+                      defaultValue: 'develop', 
                       description: '', 
                       name: 'BRANCH', 
                       quickFilterEnabled: true, 
