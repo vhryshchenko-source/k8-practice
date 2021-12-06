@@ -41,6 +41,7 @@ pipeline {
                 sh '''
                     echo $BRANCH
                     echo $GIT_COMMIT
+                    echo $GIT_BRANCH
                 '''
             }
         }
