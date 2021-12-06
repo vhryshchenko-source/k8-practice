@@ -48,8 +48,10 @@ pipeline {
         stage('Build image') {
           when {
             expression {
-              GIT_BRANCH == 'origin/develop'
-              RELEASE_TAG == ''
+              anyOf {
+                GIT_BRANCH == 'origin/develop'
+                BUILD_RELEASE == 'TRUE'
+              }
             }
           }
           steps {
@@ -73,7 +75,7 @@ pipeline {
         stage('Pull image') {
           when {
             expression {
-              RELEASE_TAG != ''
+              params.BRANCH == 'release*'
             }
           }
           steps{
@@ -85,7 +87,7 @@ pipeline {
         stage('Push image') {
           steps{
             script {
-              if (RELEASE_TAG == '') {
+              if (GIT_BRANCH == 'origin/develop') {
                 container('docker') {
                   sh 'docker push $DOCKER_REPO:$GIT_COMMIT'
                 }
@@ -100,4 +102,3 @@ pipeline {
         }
       }
 }
-
