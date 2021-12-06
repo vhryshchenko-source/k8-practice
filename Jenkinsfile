@@ -16,7 +16,32 @@ pipeline {
                       tagFilter: '*', 
                       type: 'PT_BRANCH', 
                       useRepository: 'git@github.com:vhryshchenko-source/k8-practice.git')
+
+      choice (  name: 'AGENT_LABEL', 
+                choices: ['jenkins-slave-1', 'jenkins-slave-2'], 
+                description: 'Choose jenkins worker where job will be run')
+        
+      choice (  name: 'PYTHON_VERSION', 
+                choices: ['3.7', '3.8'], 
+                description: 'Choose python version for docker base image')
+
+      string (  name: 'DOCKER_REPO', 
+                defaultValue: 'vhrysh/hit-count', 
+                description: 'Docker hub repository name')
+
+      string (  name: 'RELEASE_TAG', 
+                description: 'Enter release tag if you want to make realese')
+
+      string (  name: 'GIT_COMMIT', 
+                description: 'Enter git commit')
+
+            
+      choice (  name: 'BUILD_RELEASE', 
+                choices: ['TRUE', 'FALSE'], 
+                description: 'Choose TRUE if you want build and deploy image with release tag')
   }
+
+  
       stages {
         stage('Checkout') {
             steps{
