@@ -37,7 +37,7 @@ pipeline {
 
             
       choice (  name: 'BUILD_RELEASE', 
-                choices: ['TRUE', 'FALSE'], 
+                choices: ['FALSE', 'TRUE'], 
                 description: 'Choose TRUE if you want build and deploy image with release tag')
   }
 
