@@ -104,7 +104,10 @@ pipeline {
         stage('Pull image') {
           when {
             expression {
-              BUILD_RELEASE == 'FALSE'
+              allOf {
+                BRANCH != 'develop'
+                BUILD_RELEASE == 'FALSE'
+              }
             }
           }
           steps{
