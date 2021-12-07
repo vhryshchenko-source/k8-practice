@@ -78,7 +78,6 @@ pipeline {
               BRANCH == 'develop' || BUILD_RELEASE == 'TRUE'
             }
           }
-        }
           steps {
             container('docker') {
               echo POD_CONTAINER
@@ -105,7 +104,6 @@ pipeline {
               BRANCH != 'develop' && BUILD_RELEASE == 'FALSE'
             }
           }
-        }
           steps{
             container('docker') {
               sh 'docker pull $DOCKER_REPO:$GIT_COMMIT'
