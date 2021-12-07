@@ -41,7 +41,7 @@ pipeline {
                 description: 'Choose TRUE if you want build and deploy image with release tag')
   }
 
-  
+
       stages {
         stage('Checkout') {
             steps{
@@ -65,17 +65,18 @@ pipeline {
             steps {
                 sh '''
                     echo $BRANCH
+                    echo $BUILD_RELEASE
                     echo $GIT_COMMIT
                     echo $GIT_BRANCH
                 '''
             }
         }
-
+ // GIT_BRANCH == 'origin/develop'
         stage('Build image') {
           when {
             expression {
               anyOf {
-                GIT_BRANCH == 'origin/develop'
+                BRANCH == 'develop'
                 BUILD_RELEASE == 'TRUE'
               }
             }
@@ -84,6 +85,8 @@ pipeline {
             container('docker') {
               echo POD_CONTAINER
               echo GIT_BRANCH
+              echo BRANCH
+              echo BUILD_RELEASE
               sh '''
                   docker build --tag $DOCKER_REPO:$GIT_COMMIT --build-arg PYTHON_VERSION .
                   docker images
@@ -101,7 +104,7 @@ pipeline {
         stage('Pull image') {
           when {
             expression {
-              params.BRANCH == 'release*'
+              BUILD_RELEASE == 'FALSE'
             }
           }
           steps{
@@ -113,7 +116,7 @@ pipeline {
         stage('Push image') {
           steps{
             script {
-              if (GIT_BRANCH == 'origin/develop') {
+              if (BRANCH == 'develop') {
                 container('docker') {
                   sh 'docker push $DOCKER_REPO:$GIT_COMMIT'
                 }
@@ -128,4 +131,3 @@ pipeline {
         }
       }
 }
-// test
