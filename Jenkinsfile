@@ -75,10 +75,7 @@ pipeline {
         stage('Build image') {
           when {
             expression {
-              anyOf {
-                BRANCH == 'develop'
-                BUILD_RELEASE == 'TRUE'
-              }
+              BRANCH == 'develop' || BUILD_RELEASE == 'TRUE'
             }
           }
           steps {
@@ -103,10 +100,8 @@ pipeline {
         }
         stage('Pull image') {
           when {
-            expression {
-              allOf {
-                BRANCH != 'develop'
-                BUILD_RELEASE == 'FALSE'
+            expression { 
+              BRANCH != 'develop' && BUILD_RELEASE == 'FALSE'
               }
             }
           }
