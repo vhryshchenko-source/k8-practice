@@ -43,10 +43,29 @@ pipeline {
 
 
     stages {
-        stage('Checkout') {
+        stage('Checkout branch') {
             steps{
                 // Checkout branch
                 git branch: "${params.BRANCH}", credentialsId: 'github-credentials', url: 'git@github.com:vhryshchenko-source/k8-practice.git'
+            }
+        stage('Checkout git commit') {
+            when {
+              expression {
+                params.GIT_COMMIT != ''
+              }
+            }
+            steps{
+                // Checkout commit
+                checkout(
+                    [$class: 'GitSCM', 
+                    branches: [[name: params.GIT_COMMIT]],
+                    doGenerateSubmoduleConfigurations: false, 
+                    extensions: [],
+                    submoduleCfg: [], userRemoteConfigs: 
+                    [[credentialsId: 'github-credentials', 
+                    url: 'git@github.com:vhryshchenko-source/k8-practice.git']]
+                    ]
+                )
             }
         }
 
