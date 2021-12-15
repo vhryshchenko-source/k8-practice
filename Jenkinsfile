@@ -126,6 +126,7 @@ pipeline {
               }
               else {
                 container('docker') {
+                  sh 'echo Hi'
                   sh 'docker tag $DOCKER_REPO:$GIT_COMMIT $DOCKER_REPO:$RELEASE_TAG'
                   sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
                 }
