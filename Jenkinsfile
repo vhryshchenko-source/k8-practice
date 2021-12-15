@@ -46,7 +46,7 @@ pipeline {
         stage('Checkout') {
             steps{
                 // Checkout branch
-                git branch: "${params.BRANCH}", credentialsId: 'github-credentials', url: 'git@github.com:vhryshchenko-source/k8-practice.git' 
+                git branch: "${params.BRANCH}", credentialsId: 'github-credentials', url: 'git@github.com:vhryshchenko-source/k8-practice.git'
             }
         }
 
@@ -117,7 +117,14 @@ pipeline {
                 container('docker') {
                   sh 'docker push $DOCKER_REPO:$GIT_COMMIT'
                 }
-              } else {
+              }
+              if (BRANCH != 'develop' && BUILD_RELEASE == 'TRUE' && params.GIT_COMMIT != '' ) {
+                container('docker') {
+                  sh 'docker tag $DOCKER_REPO:$params.GIT_COMMIT $DOCKER_REPO:$RELEASE_TAG'
+                  sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
+                }
+              }
+              else {
                 container('docker') {
                   sh 'docker tag $DOCKER_REPO:$GIT_COMMIT $DOCKER_REPO:$RELEASE_TAG'
                   sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
