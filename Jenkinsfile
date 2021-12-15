@@ -59,7 +59,7 @@ pipeline {
                 // Checkout commit
                 checkout(
                     [$class: 'GitSCM', 
-                    branches: [[name: params.GIT_COMMIT]],
+                    branches: [[name: "${params.GIT_COMMIT}"]],
                     doGenerateSubmoduleConfigurations: false, 
                     extensions: [],
                     submoduleCfg: [], userRemoteConfigs: 
@@ -152,7 +152,7 @@ pipeline {
                 script {
                   if (BUILD_RELEASE == 'TRUE' && params.GIT_COMMIT != '' ) {
                     container('docker') {
-                        sh 'docker tag $DOCKER_REPO:$params.GIT_COMMIT $DOCKER_REPO:$RELEASE_TAG'
+                        sh 'docker tag $DOCKER_REPO:"${params.GIT_COMMIT}" $DOCKER_REPO:$RELEASE_TAG'
                         sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
                     }
                   }
