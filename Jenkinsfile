@@ -46,20 +46,7 @@ pipeline {
         stage('Checkout') {
             steps{
                 // Checkout branch
-                git branch: "${params.BRANCH}", credentialsId: 'github-credentials', url: 'git@github.com:vhryshchenko-source/k8-practice.git'
-'''
-                // Checkout commit
-                checkout(
-                    [$class: 'GitSCM', 
-                    branches: [[name: GIT_COMMIT]],
-                    doGenerateSubmoduleConfigurations: false, 
-                    extensions: [],
-                    submoduleCfg: [], userRemoteConfigs: 
-                    [[credentialsId: 'github-credentials', 
-                    url: 'git@github.com:vhryshchenko-source/k8-practice.git']]
-                    ]
-                )
-''' 
+                git branch: "${params.BRANCH}", credentialsId: 'github-credentials', url: 'git@github.com:vhryshchenko-source/k8-practice.git' 
             }
         }
 
