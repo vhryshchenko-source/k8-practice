@@ -41,12 +41,13 @@ pipeline {
                 description: 'Choose TRUE if you want build and deploy image with release tag')
   }
 
-'''
+
       stages {
         stage('Checkout') {
             steps{
                 // Checkout branch
                 git branch: "${params.BRANCH}", credentialsId: 'github-credentials', url: 'git@github.com:vhryshchenko-source/k8-practice.git'
+                '''
                 // Checkout commit
                 checkout(
                     [$class: 'GitSCM', 
@@ -57,10 +58,11 @@ pipeline {
                     [[credentialsId: 'github-credentials', 
                     url: 'git@github.com:vhryshchenko-source/k8-practice.git']]
                     ]
-                ) 
+                )
+                ''' 
             }
         }
-'''
+
         stage('Env print') {
             steps {
                 sh '''
@@ -79,17 +81,27 @@ pipeline {
             }
           }
           steps {
-            container('docker') {
-              echo POD_CONTAINER
-              echo GIT_BRANCH
-              echo BRANCH
-              echo BUILD_RELEASE
-              sh '''
-                  docker build --tag $DOCKER_REPO:$GIT_COMMIT --build-arg PYTHON_VERSION .
-                  docker images
-              '''
+            script {
+                if (params.GIT_COMMIT == '') {
+                    container('docker') {
+                    echo POD_CONTAINER
+                    echo GIT_BRANCH
+                    echo BRANCH
+                    echo BUILD_RELEASE
+                    sh '''
+                        docker build --tag $DOCKER_REPO:$GIT_COMMIT --build-arg PYTHON_VERSION .
+                        docker images
+                    '''
+                    }
+                } else {
+                    container('docker') {
+                    sh '''
+                        docker build --tag $DOCKER_REPO:$params.GIT_COMMIT --build-arg PYTHON_VERSION .
+                        docker images
+                    '''
+                    }
+                }
             }
-          }
         }
         stage('Docker hub login') {
           steps{
