@@ -42,7 +42,7 @@ pipeline {
   }
 
 
-      stages {
+    stages {
         stage('Checkout') {
             steps{
                 // Checkout branch
@@ -110,31 +110,41 @@ pipeline {
             }
           }
         }
-        stage('Push image') {
+        stage('Push image from develop branch') {
+          when {
+            expression { 
+              BRANCH == 'develop' && params.GIT_COMMIT == ''
+            }
+          }  
           steps{
-            script {
-              if (BRANCH == 'develop') {
-                container('docker') {
-                  sh 'docker push $DOCKER_REPO:$GIT_COMMIT'
-                }
-                break
-              }
-              if (BRANCH != 'develop' && BUILD_RELEASE == 'TRUE' && params.GIT_COMMIT != '' ) {
-                container('docker') {
-                  sh 'docker tag $DOCKER_REPO:$params.GIT_COMMIT $DOCKER_REPO:$RELEASE_TAG'
-                  sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
-                }
-                break
-              }
-              else {
-                container('docker') {
-                  sh 'echo Hi'
-                  sh 'docker tag $DOCKER_REPO:$GIT_COMMIT $DOCKER_REPO:$RELEASE_TAG'
-                  sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
-                }
-              }
+            container('docker') {
+                sh 'docker push $DOCKER_REPO:$GIT_COMMIT'
             }
           }
         }
-      }
+        stage('Push image from release branch') {
+          when {
+            expression { 
+              BRANCH != 'develop'
+            }
+          } 
+            steps {
+                script {
+                  if (BUILD_RELEASE == 'TRUE' && params.GIT_COMMIT != '' ) {
+                    container('docker') {
+                        sh 'docker tag $DOCKER_REPO:$params.GIT_COMMIT $DOCKER_REPO:$RELEASE_TAG'
+                        sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
+                    }
+                  }
+                  else {
+                    container('docker') {
+                      sh 'echo Hi'
+                      sh 'docker tag $DOCKER_REPO:$GIT_COMMIT $DOCKER_REPO:$RELEASE_TAG'
+                      sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
+                    }
+                  }
+                }
+            }
+        }
+    }
 }
