@@ -103,7 +103,7 @@ pipeline {
                 } else {
                     container('docker') {
                     sh '''
-                        docker build --tag $DOCKER_REPO:$params.GIT_COMMIT --build-arg PYTHON_VERSION .
+                        docker build --tag $DOCKER_REPO:"${params.GIT_COMMIT}" --build-arg PYTHON_VERSION .
                         docker images
                     '''
                     }
