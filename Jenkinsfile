@@ -41,7 +41,7 @@ pipeline {
                 description: 'Choose TRUE if you want build and deploy image with release tag')
   }
 
-
+'''
       stages {
         stage('Checkout') {
             steps{
@@ -60,7 +60,7 @@ pipeline {
                 ) 
             }
         }
-
+'''
         stage('Env print') {
             steps {
                 sh '''
