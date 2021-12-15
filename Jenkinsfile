@@ -103,7 +103,7 @@ pipeline {
                 } else {
                     container('docker') {
                     sh '''
-                        docker build --tag $DOCKER_REPO:"${params.GIT_COMMIT}" --build-arg PYTHON_VERSION .
+                        docker build --tag $DOCKER_REPO:${params.GIT_COMMIT} --build-arg PYTHON_VERSION .
                         docker images
                     '''
                     }
@@ -152,7 +152,7 @@ pipeline {
                 script {
                   if (BUILD_RELEASE == 'TRUE' && params.GIT_COMMIT != '' ) {
                     container('docker') {
-                        sh 'docker tag $DOCKER_REPO:"${params.GIT_COMMIT}" $DOCKER_REPO:$RELEASE_TAG'
+                        sh 'docker tag $DOCKER_REPO:${params.GIT_COMMIT} $DOCKER_REPO:$RELEASE_TAG'
                         sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
                     }
                   }
