@@ -48,6 +48,7 @@ pipeline {
                 // Checkout branch
                 git branch: "${params.BRANCH}", credentialsId: 'github-credentials', url: 'git@github.com:vhryshchenko-source/k8-practice.git'
             }
+        }
         stage('Checkout git commit') {
             when {
               expression {
