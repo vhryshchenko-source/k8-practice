@@ -47,7 +47,7 @@ pipeline {
             steps{
                 // Checkout branch
                 git branch: "${params.BRANCH}", credentialsId: 'github-credentials', url: 'git@github.com:vhryshchenko-source/k8-practice.git'
-                '''
+'''
                 // Checkout commit
                 checkout(
                     [$class: 'GitSCM', 
@@ -59,7 +59,7 @@ pipeline {
                     url: 'git@github.com:vhryshchenko-source/k8-practice.git']]
                     ]
                 )
-                ''' 
+''' 
             }
         }
 
