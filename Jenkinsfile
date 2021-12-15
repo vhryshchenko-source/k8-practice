@@ -102,6 +102,7 @@ pipeline {
                     }
                 }
             }
+          }
         }
         stage('Docker hub login') {
           steps{
