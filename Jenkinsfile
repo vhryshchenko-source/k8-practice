@@ -5,17 +5,17 @@ pipeline {
     DOCKERHUB_CREDENTIAL = credentials('docker-hub-credentials')
   }
   parameters {
-      gitParameter (  branch: '', 
-                      branchFilter: 'origin/(.*)', 
-                      defaultValue: 'develop', 
-                      description: '', 
-                      name: 'BRANCH', 
-                      quickFilterEnabled: true, 
-                      selectedValue: 'TOP', 
-                      sortMode: 'DESCENDING', 
-                      tagFilter: '*', 
-                      type: 'PT_BRANCH', 
-                      useRepository: 'git@github.com:vhryshchenko-source/k8-practice.git')
+      //gitParameter (  branch: '', 
+      //                branchFilter: 'origin/(.*)', 
+      //                defaultValue: 'develop', 
+      //                description: '', 
+      //                name: 'BRANCH', 
+      //                quickFilterEnabled: true, 
+      //                selectedValue: 'TOP', 
+      //                sortMode: 'DESCENDING', 
+      //                tagFilter: '*', 
+      //                type: 'PT_BRANCH', 
+      //                useRepository: 'git@github.com:vhryshchenko-source/k8-practice.git')
 
       choice (  name: 'AGENT_LABEL', 
                 choices: ['jenkins-slave-1', 'jenkins-slave-2'], 
@@ -34,7 +34,9 @@ pipeline {
 
       string (  name: 'GIT_COMMIT', 
                 description: 'Enter git commit')
-
+          
+      string (  name: 'BRANCH', 
+                description: 'Enter git commit')
             
       choice (  name: 'BUILD_RELEASE', 
                 choices: ['FALSE', 'TRUE'], 
@@ -89,7 +91,7 @@ pipeline {
           }
           steps {
             script {
-                if (params.GIT_COMMIT == '') {
+                if ("${params.GIT_COMMIT}" == '') {
                     container('docker') {
                     echo POD_CONTAINER
                     echo GIT_BRANCH
@@ -103,7 +105,7 @@ pipeline {
                 } else {
                     container('docker') {
                     sh '''
-                        docker build --tag $DOCKER_REPO:${params.GIT_COMMIT} --build-arg PYTHON_VERSION .
+                        docker build --tag $DOCKER_REPO:$RELEASE_TAG --build-arg PYTHON_VERSION .
                         docker images
                     '''
                     }
@@ -153,7 +155,6 @@ pipeline {
                   if (BUILD_RELEASE == 'TRUE' && params.GIT_COMMIT != '' ) {
                     container('docker') {
                         sh 'echo Hi Realise'
-                        sh 'docker tag $DOCKER_REPO:"${params.GIT_COMMIT}" $DOCKER_REPO:$RELEASE_TAG'
                         sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
                     }
                   }
