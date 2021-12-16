@@ -152,7 +152,8 @@ pipeline {
                 script {
                   if (BUILD_RELEASE == 'TRUE' && params.GIT_COMMIT != '' ) {
                     container('docker') {
-                        sh 'docker tag $DOCKER_REPO:${params.GIT_COMMIT} $DOCKER_REPO:$RELEASE_TAG'
+                        sh 'echo Hi Realise'
+                        sh 'docker tag $DOCKER_REPO:"${params.GIT_COMMIT}" $DOCKER_REPO:$RELEASE_TAG'
                         sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
                     }
                   }
