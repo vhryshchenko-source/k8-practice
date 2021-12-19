@@ -5,17 +5,17 @@ pipeline {
     DOCKERHUB_CREDENTIAL = credentials('docker-hub-credentials')
   }
   parameters {
-      //gitParameter (  branch: '', 
-      //                branchFilter: 'origin/(.*)', 
-      //                defaultValue: 'develop', 
-      //                description: '', 
-      //                name: 'BRANCH', 
-      //                quickFilterEnabled: true, 
-      //                selectedValue: 'TOP', 
-      //                sortMode: 'DESCENDING', 
-      //                tagFilter: '*', 
-      //                type: 'PT_BRANCH', 
-      //                useRepository: 'git@github.com:vhryshchenko-source/k8-practice.git')
+      gitParameter (  branch: '', 
+                      branchFilter: 'origin/(.*)', 
+                      defaultValue: 'develop', 
+                      description: '', 
+                      name: 'BRANCH', 
+                      quickFilterEnabled: true, 
+                      selectedValue: 'TOP', 
+                      sortMode: 'DESCENDING', 
+                      tagFilter: '*', 
+                      type: 'PT_BRANCH', 
+                      useRepository: 'git@github.com:vhryshchenko-source/k8-practice.git')
 
       choice (  name: 'AGENT_LABEL', 
                 choices: ['jenkins-slave-1', 'jenkins-slave-2'], 
@@ -35,8 +35,8 @@ pipeline {
       string (  name: 'GIT_COMMIT', 
                 description: 'Enter git commit')
           
-      string (  name: 'BRANCH', 
-                description: 'Enter git commit')
+      // string (  name: 'BRANCH', 
+      //          description: 'Enter git commit')
             
       choice (  name: 'BUILD_RELEASE', 
                 choices: ['FALSE', 'TRUE'], 
