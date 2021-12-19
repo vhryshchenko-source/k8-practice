@@ -1,7 +1,6 @@
 ARG  PYTHON_VERSION
 FROM python:${PYTHON_VERSION}-alpine
 WORKDIR /app
-nnn
 ENV REDIS_HOST=redis
 ENV FLASK_ENV=development
 EXPOSE 5000
