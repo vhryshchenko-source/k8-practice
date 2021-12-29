@@ -80,7 +80,7 @@ pipeline {
         stage('Env print') {
             steps {
                 sh '''
-                    echo env.COMMIT_ID
+                    echo $env.COMMIT_ID
                     echo $BRANCH
                     echo $BUILD_RELEASE
                     echo $GIT_COMMIT
