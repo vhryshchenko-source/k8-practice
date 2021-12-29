@@ -7,7 +7,7 @@ pipeline {
     ///            returnStdout: true,
     ///            script: 'git rev-parse --verify HEAD"'
     ///        )}"""
-    COMMIT_ID = "${sh(script:'git rev-parse --verify HEAD', returnStdout: true).trim()}"
+    ///COMMIT_ID = "${sh(script:'git rev-parse --verify HEAD', returnStdout: true).trim()}"
   }
   parameters {
       gitParameter (  branch: '', 
@@ -37,7 +37,7 @@ pipeline {
       string (  name: 'RELEASE_TAG', 
                 description: 'Enter release tag if you want to make realese')
 
-      string (  name: 'GIT_COMMIT', 
+      string (  name: 'COMMIT_ID', 
                 description: 'Enter git commit')
           
       // string (  name: 'BRANCH', 
@@ -59,14 +59,14 @@ pipeline {
         stage('Checkout git commit') {
             when {
               expression {
-                params.GIT_COMMIT != ''
+                params.COMMIT_ID != ''
               }
             }
             steps{
                 // Checkout commit
                 checkout(
                     [$class: 'GitSCM', 
-                    branches: [[name: "${params.GIT_COMMIT}"]],
+                    branches: [[name: "${params.COMMIT_ID}"]],
                     doGenerateSubmoduleConfigurations: false, 
                     extensions: [],
                     submoduleCfg: [], userRemoteConfigs: 
@@ -80,12 +80,11 @@ pipeline {
         stage('Env print') {
             steps {
                 sh '''
-                    echo $COMMIT_ID
                     echo $BRANCH
                     echo $BUILD_RELEASE
                     echo $GIT_COMMIT
+                    echo $COMMIT_ID
                     echo $GIT_BRANCH
-                    echo "${params.GIT_COMMIT}"
                 '''
             }
         }
@@ -97,7 +96,7 @@ pipeline {
           }
           steps {
             script {
-                if ("${params.GIT_COMMIT}" == '') {
+                if ("${params.COMMIT_ID}" == '') {
                     container('docker') {
                     echo POD_CONTAINER
                     echo GIT_BRANCH
@@ -137,9 +136,9 @@ pipeline {
           }
           steps{
               script {
-                  if (params.GIT_COMMIT != '' ) {
+                  if (params.COMMIT_ID != '' ) {
                     container('docker') {
-                        sh 'docker pull $DOCKER_REPO:$params.GIT_COMMIT'
+                        sh 'docker pull $DOCKER_REPO:$COMMIT_ID'
                     }
                   }
                   else {
@@ -153,7 +152,7 @@ pipeline {
         stage('Push image from develop branch') {
           when {
             expression { 
-              BRANCH == 'develop' && params.GIT_COMMIT == ''
+              BRANCH == 'develop' && params.COMMIT_ID == ''
             }
           }  
           steps{
@@ -173,16 +172,16 @@ pipeline {
           } 
             steps {
                 script {
-                  if (BUILD_RELEASE == 'TRUE' && params.GIT_COMMIT != '' ) {
+                  if (BUILD_RELEASE == 'TRUE' && params.COMMIT_ID != '' ) {
                     container('docker') {
                         sh 'echo Hi Realise'
                         sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
                     }
                   }
-                  if (BUILD_RELEASE == 'FALSE' && params.GIT_COMMIT != '' ) {
+                  if (BUILD_RELEASE == 'FALSE' && params.COMMIT_ID != '' ) {
                     container('docker') {
                         sh 'echo PUSH by secific commit without build'
-                        sh 'docker tag $DOCKER_REPO:$params.GIT_COMMIT $DOCKER_REPO:$RELEASE_TAG'
+                        sh 'docker tag $DOCKER_REPO:$COMMIT_ID $DOCKER_REPO:$RELEASE_TAG'
                         sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
                     }
                   }
