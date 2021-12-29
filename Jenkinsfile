@@ -133,7 +133,9 @@ pipeline {
           }
           steps{
             container('docker') {
+              sh 'COMMIT_ID=$(git rev-parse --verify HEAD)'
               sh 'docker pull $DOCKER_REPO:$GIT_COMMIT'
+              sh 'echo $COMMIT_ID'
             }
           }
         }
