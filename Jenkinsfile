@@ -131,12 +131,14 @@ pipeline {
               BRANCH != 'develop' && BUILD_RELEASE == 'FALSE'
             }
           }
+          environment {
+              WCOMMIT_ID = "${sh(script:'git rev-parse --verify HEAD', returnStdout: true).trim()}"
+          }
           steps{
-            container('docker') {
-              sh 'COMMIT_ID=$(git rev-parse --verify HEAD)'
-              sh 'docker pull $DOCKER_REPO:$GIT_COMMIT'
-              sh 'echo $COMMIT_ID'
-            }
+              container('docker') {
+                sh 'docker pull $DOCKER_REPO:$GIT_COMMIT'
+                sh 'echo $WCOMMIT_ID'
+              }
           }
         }
         stage('Push image from develop branch') {
