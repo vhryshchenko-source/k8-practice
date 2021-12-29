@@ -132,12 +132,12 @@ pipeline {
             }
           }
           environment {
-              WCOMMIT_ID = "${sh(script:'git rev-parse --verify HEAD', returnStdout: true).trim()}"
+              GIT_COMMIT = "${sh(script:'git rev-parse --verify HEAD', returnStdout: true).trim()}"
           }
           steps{
               container('docker') {
                 sh 'docker pull $DOCKER_REPO:$GIT_COMMIT'
-                sh 'echo $WCOMMIT_ID'
+                sh 'echo $GIT_COMMIT'
               }
           }
         }
