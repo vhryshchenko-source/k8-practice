@@ -85,6 +85,7 @@ pipeline {
                     echo $BUILD_RELEASE
                     echo $GIT_COMMIT
                     echo $GIT_BRANCH
+                    echo $params.GIT_COMMIT
                 '''
             }
         }
@@ -135,9 +136,17 @@ pipeline {
               GIT_COMMIT = "${sh(script:'git rev-parse --verify HEAD', returnStdout: true).trim()}"
           }
           steps{
-              container('docker') {
-                sh 'docker pull $DOCKER_REPO:$GIT_COMMIT'
-                sh 'echo $GIT_COMMIT'
+              script {
+                  if (params.GIT_COMMIT != '' ) {
+                    container('docker') {
+                        sh 'docker pull $DOCKER_REPO:$params.GIT_COMMIT'
+                    }
+                  }
+                  else {
+                    container('docker') {
+                      sh 'docker pull $DOCKER_REPO:$GIT_COMMIT'
+                    }
+                  }
               }
           }
         }
@@ -158,6 +167,9 @@ pipeline {
             expression { 
               BRANCH != 'develop'
             }
+          }
+          environment {
+              GIT_COMMIT = "${sh(script:'git rev-parse --verify HEAD', returnStdout: true).trim()}"
           } 
             steps {
                 script {
@@ -167,9 +179,16 @@ pipeline {
                         sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
                     }
                   }
+                  if (BUILD_RELEASE == 'FALSE' && params.GIT_COMMIT != '' ) {
+                    container('docker') {
+                        sh 'echo PUSH by secific commit without build'
+                        sh 'docker tag $DOCKER_REPO:$params.GIT_COMMIT $DOCKER_REPO:$RELEASE_TAG'
+                        sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
+                    }
+                  }
                   else {
                     container('docker') {
-                      sh 'echo Hi'
+                      sh 'echo push with build in release branch'
                       sh 'docker tag $DOCKER_REPO:$GIT_COMMIT $DOCKER_REPO:$RELEASE_TAG'
                       sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
                     }
