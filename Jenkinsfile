@@ -3,10 +3,11 @@ pipeline {
 
   environment {
     DOCKERHUB_CREDENTIAL = credentials('docker-hub-credentials')
-    COMMIT_ID = """${sh(
-                returnStdout: true,
-                script: 'git rev-parse --verify HEAD"'
-            )}"""
+    ///COMMIT_ID = """${sh(
+    ///            returnStdout: true,
+    ///            script: 'git rev-parse --verify HEAD"'
+    ///        )}"""
+    COMMIT_ID = "${sh(script:'git rev-parse --verify HEAD', returnStdout: true).trim()}"
   }
   parameters {
       gitParameter (  branch: '', 
