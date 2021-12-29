@@ -85,7 +85,7 @@ pipeline {
                     echo $BUILD_RELEASE
                     echo $GIT_COMMIT
                     echo $GIT_BRANCH
-                    echo ${params.GIT_COMMIT}
+                    echo "${params.GIT_COMMIT}"
                 '''
             }
         }
