@@ -3,6 +3,10 @@ pipeline {
 
   environment {
     DOCKERHUB_CREDENTIAL = credentials('docker-hub-credentials')
+    COMMIT_ID = """${sh(
+                returnStdout: true,
+                script: 'git rev-parse --verify HEAD"'
+            )}"""
   }
   parameters {
       gitParameter (  branch: '', 
@@ -75,6 +79,7 @@ pipeline {
         stage('Env print') {
             steps {
                 sh '''
+                    echo env.COMMIT_ID
                     echo $BRANCH
                     echo $BUILD_RELEASE
                     echo $GIT_COMMIT
@@ -82,7 +87,6 @@ pipeline {
                 '''
             }
         }
- // GIT_BRANCH == 'origin/develop'
         stage('Build image') {
           when {
             expression {
