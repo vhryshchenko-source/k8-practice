@@ -3,11 +3,6 @@ pipeline {
 
   environment {
     DOCKERHUB_CREDENTIAL = credentials('docker-hub-credentials')
-    ///COMMIT_ID = """${sh(
-    ///            returnStdout: true,
-    ///            script: 'git rev-parse --verify HEAD"'
-    ///        )}"""
-    ///COMMIT_ID = "${sh(script:'git rev-parse --verify HEAD', returnStdout: true).trim()}"
   }
   parameters {
       gitParameter (  branch: '', 
@@ -39,9 +34,6 @@ pipeline {
 
       string (  name: 'COMMIT_ID', 
                 description: 'Enter git commit')
-          
-      // string (  name: 'BRANCH', 
-      //          description: 'Enter git commit')
             
       choice (  name: 'BUILD_RELEASE', 
                 choices: ['FALSE', 'TRUE'], 
@@ -77,17 +69,6 @@ pipeline {
             }
         }
 
-        stage('Env print') {
-            steps {
-                sh '''
-                    echo $BRANCH
-                    echo $BUILD_RELEASE
-                    echo $GIT_COMMIT
-                    echo $COMMIT_ID
-                    echo $GIT_BRANCH
-                '''
-            }
-        }
         stage('Build image') {
           when {
             expression {
@@ -98,20 +79,14 @@ pipeline {
             script {
                 if ("${params.COMMIT_ID}" == '') {
                     container('docker') {
-                    echo POD_CONTAINER
-                    echo GIT_BRANCH
-                    echo BRANCH
-                    echo BUILD_RELEASE
                     sh '''
                         docker build --tag $DOCKER_REPO:$GIT_COMMIT --build-arg PYTHON_VERSION .
-                        docker images
                     '''
                     }
                 } else {
                     container('docker') {
                     sh '''
                         docker build --tag $DOCKER_REPO:$RELEASE_TAG --build-arg PYTHON_VERSION .
-                        docker images
                     '''
                     }
                 }
@@ -174,7 +149,6 @@ pipeline {
                 script {
                   if (BUILD_RELEASE == 'TRUE' && params.COMMIT_ID != '' ) {
                     container('docker') {
-                        sh 'echo Hi Realise'
                         sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
                     }
                   }
