@@ -7,3 +7,4 @@ EXPOSE 5000
 COPY ./hits ./hits
 RUN sh -c 'python -m pip install flask==1.1.2 redis==3.5.3'
 CMD sh -c 'python -m hits'
+fds
