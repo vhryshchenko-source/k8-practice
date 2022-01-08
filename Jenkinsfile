@@ -185,7 +185,7 @@ pipeline {
                         sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
                     }
                   }
-                  else {
+                  if (BUILD_RELEASE == 'FALSE' && params.COMMIT_ID == '' ) {
                     container('docker') {
                       sh 'echo push with build in release branch'
                       sh 'docker tag $DOCKER_REPO:$GIT_COMMIT $DOCKER_REPO:$RELEASE_TAG'
