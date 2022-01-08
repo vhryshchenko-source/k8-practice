@@ -178,13 +178,13 @@ pipeline {
                         sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
                     }
                   }
-                  if (BUILD_RELEASE == 'FALSE' && params.COMMIT_ID != '' ) {
-                    container('docker') {
-                        sh 'echo PUSH by secific commit without build'
-                        sh 'docker tag $DOCKER_REPO:$COMMIT_ID $DOCKER_REPO:$RELEASE_TAG'
-                        sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
-                    }
-                  }
+                 // if (BUILD_RELEASE == 'FALSE' && params.COMMIT_ID != '' ) {
+                 //   container('docker') {
+                  //      sh 'echo PUSH by secific commit without build'
+                  //      sh 'docker tag $DOCKER_REPO:$COMMIT_ID $DOCKER_REPO:$RELEASE_TAG'
+                 //       sh 'docker push $DOCKER_REPO:$RELEASE_TAG'
+                  //  }
+                //  }
                   else {
                     container('docker') {
                       sh 'echo push with build in release branch'
