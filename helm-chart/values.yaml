@@ -6,4 +6,3 @@ namespace: jenkins
 redis:
   image: redis:alpine
   name: redis
-
