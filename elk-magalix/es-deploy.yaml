@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: elasticsearch-logging
+  namespace: elk
   labels:
     name: elasticsearch-logging
 spec:
