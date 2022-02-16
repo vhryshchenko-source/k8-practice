@@ -1,0 +1,10 @@
+container:
+  image: vhrysh/hit-count:e3f2e2d902970ba6969624480c6b02e864c1be2f
+
+namespace: elk
+
+kibana:
+  image: docker.elastic.co/kibana/kibana-oss:6.8.4
+
+elasticsearch:
+  image: elasticsearch:7.8.0
