@@ -1,0 +1,12 @@
+filebeat.inputs:
+ - type: log
+   paths:
+    - /var/lib/docker/containers/*/*.log
+    - /tmp/output.log
+    #- /var/log/*
+ 
+output:
+  logstash:
+    #hosts: [ "logstash-service:5044" ]
+    hosts: [ "10.79.249.200:5044" ]
+    #hosts: [ "10.79.249.222:31119" ]

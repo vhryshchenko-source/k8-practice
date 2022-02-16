@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-test
+  namespace: elk
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-test
+  template:
+    metadata:
+      labels:
+        app: log-test
+    spec:
+      containers:
+      - name: log-test-app
+        image: sladesoftware/log-application:latest
+        volumeMounts:
+          - name: manual-log-directory
+            mountPath: /tmp/
+      volumes:
+          - name: manual-log-directory
+            emptyDir: {}
+
+
+          #- name: logging-app-manual
+        #  image: sladesoftware/log-application:latest
+        #  volumeMounts:
+        #    - name: manual-log-directory
+        #      mountPath: /tmp/
