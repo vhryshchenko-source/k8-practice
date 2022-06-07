@@ -1,3 +1,5 @@
+[![Build Status](http://34.149.174.67/buildStatus/icon?job=build-app)](http://34.149.174.67/job/build-app/)
+
 # Building a Python app with Redis using Jenkins on Kubernetes and deploying by Helm
 
 ## Description
