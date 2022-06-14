@@ -3,6 +3,7 @@ resource "google_container_cluster" "primary" {
   location                 = var.cluster_region
   remove_default_node_pool = true
   initial_node_count       = 1
+  network = "kubernetes"
 }
 
 resource "google_container_node_pool" "primary_pool_nodes" {
