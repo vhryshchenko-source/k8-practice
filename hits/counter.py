@@ -12,4 +12,3 @@ def increment():
     return 'I have been seen {t} times. My Hostname is: {h}\n'.format(
         t=redis.incr('hits'), h=socket.gethostname()
     )
-hvhj
