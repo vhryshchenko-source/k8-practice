@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jenkins-ing
+  namespace: jenkins 
+  annotations:
+    kubernetes.io/ingress.class: gce
+    kubernetes.io/ingress.global-static-ip-name: jenkins
+spec:
+  defaultBackend:
+    service:
+      name: jenkins-master
+      port: 
+        number: 80
