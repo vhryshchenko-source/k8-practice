@@ -8,7 +8,7 @@ metadata:
 data:
   SONARQUBE_JDBC_URL: "jdbc:postgresql://postgres:5432/sonar_db"
   SONARQUBE_JDBC_USERNAME: "sonar_user"
-  SONARQUBE_JDBC_PASSWORD: "S0N4RQUB3"
+  # SONARQUBE_JDBC_PASSWORD: "S0N4RQUB3"
   JAVA_OPTS: "-Duser.timezone=Asia/Jakarta -Xmx2048m"
 ---
 apiVersion: apps/v1
@@ -46,6 +46,12 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9000
+        env:
+        - name: SONARQUBE_JDBC_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: password
         envFrom:
         - configMapRef:
             name: sonar-config

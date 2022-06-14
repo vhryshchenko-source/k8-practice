@@ -8,7 +8,7 @@ metadata:
 data:
   POSTGRESQL_USERNAME: sonar_user
   POSTGRESQL_DATABASE: sonar_db
-  POSTGRESQL_PASSWORD: S0N4RQUB3
+  #POSTGRESQL_PASSWORD: S0N4RQUB3
 ---
 apiVersion: v1
 kind: Service
@@ -52,6 +52,11 @@ spec:
         env:
         - name: ALLOW_EMPTY_PASSWORD
           value: "yes"
+        - name: POSTGRESQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres
+              key: password
         envFrom:
         - configMapRef:
             name: postgres
