@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sonar-ing
+  namespace: sonar 
+  annotations:
+    kubernetes.io/ingress.class: gce
+    kubernetes.io/ingress.global-static-ip-name: sonar
+spec:
+  defaultBackend:
+    service:
+      name: sonarqube-sv
+      port: 
+        number: 9000

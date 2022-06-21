@@ -44,7 +44,7 @@ spec:
       securityContext:
         fsGroup: 2000 
       containers:
-      - name: postgress
+      - name: postgres
         image: bitnami/postgresql
         imagePullPolicy: IfNotPresent
         ports:

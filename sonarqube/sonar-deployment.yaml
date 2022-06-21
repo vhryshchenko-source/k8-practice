@@ -80,8 +80,21 @@ metadata:
   labels:
     app: sonarqube-sv
 spec:
+  type: NodePort
   ports:
   - port: 9000
     name: sonar
   selector:
     app: sonar
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: jenkins-master
+#   namespace: jenkins
+# spec:
+#   type: NodePort
+#   ports:
+#   - port: 80
+#     targetPort: 8080
+#     name: jenkins-http
