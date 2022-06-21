@@ -1,0 +1,32 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres-pvc
+  namespace: sonar
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: standard
+  volumeMode: Filesystem
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv
+  namespace: sonar
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  claimRef:
+    namespace: sonar
+    name: postgres-pvc
+  gcePersistentDisk:
+    pdName: postgresql
+    fsType: ext4

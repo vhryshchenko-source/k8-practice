@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sonar-pvc
+  namespace: sonar
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: standard
+  volumeMode: Filesystem
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sonar-pv
+  namespace: sonar
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  claimRef:
+    namespace: sonar
+    name: sonar-pvc
+  gcePersistentDisk:
+    pdName: sonarqube 
+    fsType: ext4
