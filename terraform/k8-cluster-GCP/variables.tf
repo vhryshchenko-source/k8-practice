@@ -7,24 +7,24 @@ variable "credential_path" {}
 
 # Parameters
 variable "cluster_name" {
-    default = "gke-cluster"
+  default = "gke-cluster"
 }
 
 variable "cluster_region" {
-    default = "us-central1"
-  
+  default = "us-central1"
+
 }
 variable "node_zones" {
-    type = list(string)
-    default = ["us-central1-a"]
+  type    = list(string)
+  default = ["us-central1-a"]
 }
 
 variable "node_count" {
-    type = number 
-    default = 1
+  type    = number
+  default = 1
 }
 
 
 variable "machine_type" {
-    default = "e2-small"
+  default = "e2-small"
 }
