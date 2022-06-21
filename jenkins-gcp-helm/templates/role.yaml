@@ -4,6 +4,8 @@ kind: ServiceAccount
 metadata:
   name: jenkins-master
   namespace: {{ .Values.namespace }}
+  annotations:
+    iam.gke.io/gcp-service-account: {{ .Values.gcp_sa }}
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1

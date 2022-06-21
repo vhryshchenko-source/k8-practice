@@ -29,8 +29,11 @@ spec:
         volumeMounts:
         - name: jenkins-home
           mountPath: /var/jenkins_home
+      serviceAccountName: jenkins-master
+      nodeSelector:
+        iam.gke.io/gke-metadata-server-enabled: "true"
       volumes:
       - name: jenkins-home
         gcePersistentDisk: 
-          pdName: jenkins-master 
+          pdName: jenkins-master
           fsType: ext4
