@@ -1,8 +1,11 @@
 container:
   image: vhrysh/hit-count:e3f2e2d902970ba6969624480c6b02e864c1be2f
 
-namespace: jenkins
+namespace: app
 
 redis:
   image: redis:alpine
   name: redis
+
+autoscale:
+  cpuUtiluzation: 20
