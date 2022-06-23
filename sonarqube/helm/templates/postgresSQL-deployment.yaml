@@ -2,19 +2,18 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postgres
-  namespace: sonar
+  namespace: {{ .Values.namespace }}
   labels:
     app: postgres
 data:
   POSTGRESQL_USERNAME: sonar_user
   POSTGRESQL_DATABASE: sonar_db
-  #POSTGRESQL_PASSWORD: S0N4RQUB3
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: postgres
-  namespace: sonar
+  namespace: {{ .Values.namespace }}
   labels:
     app: postgres
 spec:
@@ -28,7 +27,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres
-  namespace: sonar
+  namespace: {{ .Values.namespace }}
   labels:
     app: postgres
 spec:
@@ -44,7 +43,7 @@ spec:
       securityContext:
         fsGroup: 2000 
       containers:
-      - name: postgress
+      - name: postgres
         image: bitnami/postgresql
         imagePullPolicy: IfNotPresent
         ports:

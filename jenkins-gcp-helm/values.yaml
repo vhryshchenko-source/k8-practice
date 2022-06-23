@@ -1,1 +1,2 @@
 namespace: jenkins
+gcp_sa: kubernetes-gsm@gcp101583-vhysh.iam.gserviceaccount.com
