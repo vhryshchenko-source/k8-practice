@@ -2,20 +2,19 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: sonar-config
-  namespace: sonar
+  namespace: {{ .Values.namespace }}
   labels:
     app: sonar
 data:
   SONARQUBE_JDBC_URL: "jdbc:postgresql://postgres:5432/sonar_db"
   SONARQUBE_JDBC_USERNAME: "sonar_user"
-  # SONARQUBE_JDBC_PASSWORD: "S0N4RQUB3"
   JAVA_OPTS: "-Duser.timezone=Asia/Jakarta -Xmx2048m"
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sonar
-  namespace: sonar
+  namespace: {{ .Values.namespace }}
   labels:
     app: sonar
 spec:
@@ -76,7 +75,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: sonarqube-sv
-  namespace: sonar
+  namespace: {{ .Values.namespace }}
   labels:
     app: sonarqube-sv
 spec:
@@ -86,15 +85,3 @@ spec:
     name: sonar
   selector:
     app: sonar
-
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: jenkins-master
-#   namespace: jenkins
-# spec:
-#   type: NodePort
-#   ports:
-#   - port: 80
-#     targetPort: 8080
-#     name: jenkins-http
